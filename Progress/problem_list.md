@@ -10,7 +10,7 @@ Problems are marked complete only after:
 
 ## Arrays & Strings
 
-- [ ] Two Sum
+- [x] Two Sum
 - [ ] Best Time to Buy and Sell Stock
 - [ ] Contains Duplicate
 - [ ] Valid Palindrome
