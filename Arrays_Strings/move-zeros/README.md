@@ -44,7 +44,7 @@ class Solution:
         for i in range(len(nums)):
             nums[i] = temp[i]
 
----
+```
 
 ### ⏱ Complexity (Brute Force)
 
