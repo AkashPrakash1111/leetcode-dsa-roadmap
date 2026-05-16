@@ -1,15 +1,27 @@
-# 🚀 Move Zeroes — Two Pointer Mastery
+# 🚀 Contains Duplicate — HashSet Pattern Mastery
 
 ---
 
 ## 📌 Problem Overview
 
-Given an integer array `nums`, move all `0`s to the **end** of the array while:
+Given an integer array `nums`, return:
 
-- preserving the **relative order** of non-zero elements  
-- modifying the array **in-place**
+- `True` → if any value appears **at least twice**
+- `False` → if all elements are unique  
 
-No extra array should be used in the optimized solution.
+🔗 LeetCode Problem: https://leetcode.com/problems/contains-duplicate/
+
+---
+
+## 🧠 Why This Problem Matters
+
+This is a foundational **hashing problem** that introduces:
+
+- Efficient duplicate detection  
+- HashSet for constant-time lookups  
+- Time vs Space tradeoffs  
+
+Understanding this pattern helps in solving many frequency-based problems.
 
 ---
 
@@ -17,11 +29,7 @@ No extra array should be used in the optimized solution.
 
 ### 💡 Idea
 
-1. Create a temporary array  
-2. Copy all non-zero elements  
-3. Count the number of zeros  
-4. Append zeros at the end  
-5. Copy everything back to the original array  
+Compare every element with every other element using nested loops.
 
 ---
 
@@ -29,90 +37,155 @@ No extra array should be used in the optimized solution.
 
 ```python
 class Solution:
-    def moveZeroes(self, nums):
-        temp = []
-        zero_count = 0
+    def containsDuplicate(self, nums):
+        n = len(nums)
 
-        for num in nums:
-            if num == 0:
-                zero_count += 1
-            else:
-                temp.append(num)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] == nums[j]:
+                    return True
 
-        temp.extend([0] * zero_count)
-
-        for i in range(len(nums)):
-            nums[i] = temp[i]
-
+        return False
 ```
+
+---
 
 ### ⏱ Complexity (Brute Force)
 
-- **Time:** O(n)  
-- **Space:** O(n)  
+* **Time:** O(n²) ❌
+* **Space:** O(1) ✅
+
+Nested loops cause quadratic time complexity.
 
 ---
 
-## 🚀 Optimized Approach — Two Pointers
+## ⚖️ Better Approach — Sorting
 
-### 🔑 Core Insight
+### 💡 Core Insight
 
-- Maintain a pointer that tracks where the next non-zero element should be placed  
-- Traverse the array once  
-- Swap only when necessary  
+If duplicates exist, after sorting they will be **adjacent**.
 
 ---
 
-### ✅ Optimized Code (Best Solution)
+### 🧪 Sorting Code
 
 ```python
 class Solution:
-    def moveZeroes(self, nums):
-        last_non_zero = 0
+    def containsDuplicate(self, nums):
+        nums.sort()
 
-        for i in range(len(nums)):
-            if nums[i] != 0:
-                nums[last_non_zero], nums[i] = nums[i], nums[last_non_zero]
-                last_non_zero += 1
+        for i in range(len(nums) - 1):
+            if nums[i] == nums[i + 1]:
+                return True
+
+        return False
 ```
 
 ---
 
-## 🔍 Pointer Breakdown
+### ⏱ Complexity (Sorting)
 
-| Pointer         | Meaning                                    |
-|-----------------|--------------------------------------------|
-| `i`             | Fast pointer scanning the array            |
-| `last_non_zero` | Position where the next non-zero should go |
+* **Time:** O(n log n)
+* **Space:** Depends on sorting implementation
+
+Improves time complexity but still not optimal.
 
 ---
 
-## 🧾 Dry Run Example
+## 🚀 Optimal Approach — HashSet
 
-**Input**
+### 🔑 Core Idea
 
+A **set cannot contain duplicates**.
+
+* Traverse the array
+* If element already exists in set → duplicate found
+* Otherwise, add it
+
+---
+
+### ✅ Optimized Code
+
+```python
+class Solution:
+    def containsDuplicate(self, nums):
+        seen = set()
+
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+
+        return False
 ```
-[0, 1, 0, 3, 12]
+
+---
+
+### ⏱ Complexity (Optimal)
+
+* **Time:** O(n) ✅
+* **Space:** O(n) ✅
+
+Single pass with constant-time lookups.
+
+---
+
+## 🔥 Even Cleaner Version
+
+```python
+class Solution:
+    def containsDuplicate(self, nums):
+        return len(nums) != len(set(nums))
 ```
 
-| i | nums[i] | Action | Array           | last_non_zero |
-|---|---------|--------|----------------|---------------|
-| 0 | 0       | skip   | [0,1,0,3,12]   | 0             |
-| 1 | 1       | swap   | [1,0,0,3,12]   | 1             |
-| 2 | 0       | skip   | [1,0,0,3,12]   | 1             |
-| 3 | 3       | swap   | [1,3,0,0,12]   | 2             |
-| 4 | 12      | swap   | [1,3,12,0,0]   | 3             |
+### 💡 Why This Works
+
+If duplicates exist → set size becomes smaller than original list.
+
+---
+
+## ⚖️ Tradeoff Summary
+
+| Approach    | Time       | Space   |
+| ----------- | ---------- | ------- |
+| Brute Force | O(n²)      | O(1)    |
+| Sorting     | O(n log n) | Depends |
+| HashSet     | O(n)       | O(n)    |
+
+---
+
+## 🔁 Pattern Recognition
+
+If a problem mentions:
+
+* Checking duplicates
+* Frequency counting
+* Unique elements
+
+👉 Think: **HashSet / HashMap**
 
 ---
 
 ## 🧩 Final Takeaway
 
-- Brute force is easy but space-inefficient  
-- Two pointers give a clean, optimal solution  
-- Time Complexity: O(n)  
-- Space Complexity: O(1)  
+* Brute force is simple but inefficient
+* Sorting improves time but changes order
+* HashSet gives optimal linear-time performance
+* Classic example of **Time vs Space tradeoff**
 
-## MY NOTES
+Time Complexity: O(n)
 
-![WhatsApp Image 2026-02-10 at 7 22 39 PM](https://github.com/user-attachments/assets/faf3689c-72e3-4037-9e82-a317ab44c294)
+Space Complexity: O(n)
+
+---
+
+## ✍️ My Handwritten Notes
+
+
+
+
+![WhatsApp Image 2026-02-11 at 6 28 26 PM](https://github.com/user-attachments/assets/59cb3040-8cb5-4370-b7cb-3ba5290a7ebc)
+
+
+![Handwritten Notes - Contains Duplicate](./notes/contains_duplicate_notes.png)
 
