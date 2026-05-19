@@ -94,6 +94,10 @@ Spot this pattern when a problem says:
 ---
 ## MY NOTES 
 
+
+
 <img width="1280" height="812" alt="672fb940-e06c-476f-b0f3-de4b84584c14" src="https://github.com/user-attachments/assets/fd28f745-c500-4368-ac54-7237c7608334" />
 
+
+---
 > 💡 **Interview tip:** When asked *why O(n)?* — "We avoid recomputing by dynamically maintaining `left_sum` and deriving `right_sum` mathematically from `total_sum`."
